@@ -1,0 +1,8 @@
+
+#include "MyError.h"
+#include <stdexcept>
+
+void error(const std::string& s)
+{
+	throw std::runtime_error{ s };
+}
