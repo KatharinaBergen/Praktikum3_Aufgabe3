@@ -1,6 +1,6 @@
 /*
 Author: Kat Bergen
-v.02 31.05.2020
+v.04 07.06.2020
 source folder: C:\Users\katha\source\repos\
 
 calculator program
@@ -13,38 +13,35 @@ using std::cout;
 using std::cin;
 
 #include "MyError.h"
+#include "Token.h"
+#include "Token_stream.h"
 
 int main() try
 {
-	int x{};
-	int y{};
-	char op{};
-
-	//user input
-	cout << "Rechenausdruck (mit +,-,*,/, Ende mit ;) "; // wie z.B. 2*3+4;
-	cin >> x;
-	if (!cin) error("Kein linker Operand");
+	Token tok{};
+	Token_stream ts{}; // Standardkonstruktor?!
 
 
-	while (cin >> op && op != ';') {
-		if (!cin) error("Kein Operator");
-
-		cin >> y;
-		if (!cin) error("Kein rechter Operand");
-
-		switch (op) {
-		case '+': x += y; break;
-		case '-': x -= y; break;
-		case '*': x *= y; break;
-		case '/':
+	do
+	{
+		cout << "Bitte geben Sie die Kalkulation ein, die Sie berechnen möchten.\n> ";
+		tok = ts.get();
+		if (tok.getKind() == '?')
 		{
-			if (y == 0) error("Teilung durch 0 nicht möglich.");
-			x /= y; break;
+			std::cout << "Sie können eine Rechneroperation mit +, -, *, / und Klammern durchführen.\nUm eine Ergebnis zu erhalten, Tippen Sie bitte ';' ein. Um das Programm zu beenden, Tippen Sie bitte 'q' ein.\n\n";
+			continue;
 		}
-		default: error("Unbekannter Operator");
-		}//switch()
-	}// while()
-	cout << "Ergebnis: " << x << std::endl;
+		if (tok.getKind() == ';') continue;
+		if (tok.getKind() == 'q') break;
+		ts.putback(tok);
+		cout << " = " << calculate(ts) << std::endl << std::endl;
+
+		if (ts.get().getKind() == '?') std::cout << "Sie können eine Rechneroperation mit +, -, *, / und Klammern durchführen.\nUm eine Ergebnis zu erhalten, Tippen Sie bitte ';' ein. Um das Programm zu beenden, Tippen Sie bitte 'q' ein.\n\n";
+
+		ts = Token_stream(); //resets ts to empty, so as to avoid duplicate cout
+
+	} while (cin);
+
 	return 0;
 }
 
