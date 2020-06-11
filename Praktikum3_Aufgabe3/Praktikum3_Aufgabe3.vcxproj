@@ -141,11 +141,13 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MyError.cpp" />
     <ClCompile Include="Token.cpp" />
+    <ClCompile Include="Token_stream.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Functions.h" />
     <ClInclude Include="MyError.h" />
     <ClInclude Include="Token.h" />
+    <ClInclude Include="Token_stream.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
